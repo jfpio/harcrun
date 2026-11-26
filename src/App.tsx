@@ -754,7 +754,7 @@ function Tokens() {
           title="Tokeny miejsc"
           description="Wielorazowe tokeny QR. Wręczaj w kolejności przekroczenia mety, zaczynając od 1."
         />
-        <div className="panel actions">
+        <div className="panel token-toolbar">
           <label>
             Liczba tokenów
             <input
