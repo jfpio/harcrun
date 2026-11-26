@@ -1,0 +1,19 @@
+node_modules/
+dist/
+functions/lib/
+.env*
+!.env.example
+.firebase/
+*debug.log
+.DS_Store
+
+# Lokalna konfiguracja i poświadczenia administracyjne
+.codex/
+.agents/
+.aws/
+.runtimeconfig.json
+*.pem
+*.key
+*service-account*.json
+*serviceAccount*.json
+*-firebase-adminsdk-*.json

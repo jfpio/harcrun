@@ -1,0 +1,26 @@
+rules_version = '2';
+service cloud.firestore {
+  match /databases/{database}/documents {
+    function zhr() {
+      return request.auth != null && request.auth.token.email_verified == true
+        && request.auth.token.email.matches('^[^@\\s]+@[zZ][hH][rR]\\.[pP][lL]$');
+    }
+    match /profiles/{uid} { allow get: if zhr() && request.auth.uid == uid; }
+    match /runs/{runId} {
+      allow read: if zhr() && request.auth.uid in resource.data.memberUids;
+      match /sessions/{sessionId} {
+        allow read: if zhr() && request.auth.uid in get(/databases/$(database)/documents/runs/$(runId)).data.memberUids;
+      }
+      match /audit/{entry} {
+        allow read: if zhr() && request.auth.uid == get(/databases/$(database)/documents/runs/$(runId)).data.ownerUid;
+      }
+    }
+    match /publicRuns/{runId} {
+      allow read: if true;
+      match /versions/{versionId} {
+        allow get: if get(/databases/$(database)/documents/publicRuns/$(runId)).data.activeVersion == versionId;
+      }
+    }
+    match /{document=**} { allow write, read: if false; }
+  }
+}
